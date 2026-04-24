@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rental-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rental
+      POSTGRES_USER: rental
+      POSTGRES_PASSWORD: rental
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rental -d rental"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - rental-postgres-data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rental-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  rental:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rental-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: 8083
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/rental
+      SPRING_DATASOURCE_USERNAME: rental
+      SPRING_DATASOURCE_PASSWORD: rental
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      APP_RABBIT_EXCHANGE: rental
+    ports:
+      - "8083:8083"
+
+volumes:
+  rental-postgres-data:
