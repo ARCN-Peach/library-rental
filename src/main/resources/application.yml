@@ -1,0 +1,39 @@
+server:
+  port: ${SERVER_PORT:8083}
+
+spring:
+  application:
+    name: library-rental
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/rental}
+    username: ${SPRING_DATASOURCE_USERNAME:rental}
+    password: ${SPRING_DATASOURCE_PASSWORD:rental}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  rabbit:
+    exchange: ${APP_RABBIT_EXCHANGE:rental}
