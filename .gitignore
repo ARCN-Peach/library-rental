@@ -1,0 +1,36 @@
+# Maven / Java build outputs
+/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Spring Boot / local runtime
+replay_pid*
+*.pid
+*.seed
+
+# Test and coverage outputs
+surefire-reports/
+*.gcda
+*.gcno
+
+# Environment files
+.env
+.env.*
