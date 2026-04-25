@@ -1,5 +1,7 @@
 # rental
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ARCN-Peach_library-fine&metric=alert_status&token=def867db9ec5eb3edf8a65f66d9e1b5b7df0d73b)](https://sonarcloud.io/summary/new_code?id=ARCN-Peach_library-fine)
+
 Microservicio de prestamos para la biblioteca.
 
 ## Endpoints principales
